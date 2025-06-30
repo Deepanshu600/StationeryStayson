@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart - SSPP1 Store</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      color: #222;
+    }
+    nav {
+      background-color: #111;
+      padding: 20px;
+      text-align: center;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 20px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    nav a:hover {
+      color: #aaa;
+    }
+    .cart-container {
+      max-width: 1000px;
+      margin: 40px auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #111;
+    }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #ddd;
+      padding: 20px 0;
+    }
+    .cart-item:last-child {
+      border-bottom: none;
+    }
+    .item-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .item-info img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .item-details {
+      display: flex;
+      flex-direction: column;
+    }
+    .item-details h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .item-details p {
+      margin: 5px 0 0;
+      color: #666;
+      font-size: 14px;
+    }
+    .item-price {
+      font-size: 18px;
+      font-weight: bold;
+      color: #111;
+    }
+    .remove-btn {
+      background-color: #111;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+    .remove-btn:hover {
+      background-color: #333;
+    }
+    .total {
+      text-align: right;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 30px;
+    }
+    .checkout-link {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+      background-color: #111;
+      color: white;
+      padding: 14px 20px;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background-color 0.3s;
+    }
+    .checkout-link:hover {
+      background-color: #333;
+    }
+    @media (max-width: 600px) {
+      .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .item-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .item-price {
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav id="mainNav">
+    <a href="index.html">Home</a> |
+    <a href="login.html" id="loginLink">Login</a> |
+    <a href="register.html" id="registerLink">Register</a> |
+    <a href="cart.html">Cart</a> |
+    <span id="adminLink">| <a href="admin.html">Admin</a></span>
+  </nav>
+
+  <div class="cart-container">
+    <h1>Shopping Cart</h1>
+    <div id="cart-items">
+      <!-- Cart items will be rendered here -->
+    </div>
+    <div class="total" id="cart-total">Total: ₹0</div>
+    <a class="checkout-link" href="checkout.html">Proceed to Checkout</a>
+  </div>
+
+  <script>
+    const cartItemsDiv = document.getElementById('cart-items');
+    const cartTotalDiv = document.getElementById('cart-total');
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function renderCart() {
+      cartItemsDiv.innerHTML = '';
+      let total = 0;
+
+      if (cart.length === 0) {
+        cartItemsDiv.innerHTML = '<p style="text-align:center;color:#777;">Your cart is empty.</p>';
+        cartTotalDiv.textContent = 'Total: ₹0';
+        return;
+      }
+
+      cart.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <div class="item-info">
+            <img src="${item.image}" alt="${item.name}">
+            <div class="item-details">
+              <h3>${item.name}</h3>
+              <p>Price: ₹${item.price}</p>
+            </div>
+          </div>
+          <div class="item-price">₹${item.price}</div>
+          <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+        `;
+        cartItemsDiv.appendChild(div);
+        total += item.price;
+      });
+
+      cartTotalDiv.textContent = 'Total: ₹' + total;
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    renderCart();
+
+    // ✅ Dynamic Nav Logic
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    const adminLink = document.getElementById('adminLink');
+    const loginLink = document.getElementById('loginLink');
+    const registerLink = document.getElementById('registerLink');
+
+    if (loggedInUser) {
+      if (loginLink) loginLink.style.display = 'none';
+      if (registerLink) registerLink.style.display = 'none';
+      if (adminLink) {
+        if (loggedInUser.isAdmin) {
+          adminLink.style.display = 'inline';
+        } else {
+          adminLink.style.display = 'none';
+        }
+      }
+    } else {
+      if (loginLink) loginLink.style.display = 'inline';
+      if (registerLink) registerLink.style.display = 'inline';
+      if (adminLink) adminLink.style.display = 'none';
+    }
+  </script>
+</body>
+</html>

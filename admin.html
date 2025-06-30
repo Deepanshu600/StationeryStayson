@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Stationary Stayson Store</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      color: #222;
+    }
+    nav {
+      background-color: #111;
+      padding: 20px;
+      text-align: center;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 20px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    nav a:hover {
+      color: #aaa;
+    }
+    .admin-container {
+      max-width: 1100px;
+      margin: 40px auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #111;
+    }
+    .admin-section {
+      margin-bottom: 50px;
+    }
+    .admin-section h2 {
+      border-bottom: 2px solid #111;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      color: #111;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    th {
+      background-color: #f0f0f0;
+      color: #111;
+    }
+    img.banner-thumb {
+      width: 200px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    button {
+      background-color: #111;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #333;
+    }
+    .form-card {
+      background-color: #f9f9f9;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      margin-bottom: 30px;
+    }
+    .form-card h3 {
+      margin-top: 0;
+      color: #111;
+    }
+    .form-card label {
+      display: block;
+      margin: 12px 0 5px;
+      font-weight: bold;
+    }
+    .form-card input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    .form-card button {
+      margin-top: 20px;
+      width: 100%;
+      font-size: 16px;
+    }
+    .coming-soon {
+      text-align: center;
+      color: #777;
+      font-size: 16px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <nav id="mainNav">
+    <a href="index.html">Home</a> |
+    <a href="login.html" id="loginLink">Login</a> |
+    <a href="register.html" id="registerLink">Register</a> |
+    <a href="cart.html">Cart</a> |
+    <span id="adminLink">| <a href="admin.html">Admin</a></span>
+  </nav>
+
+  <div class="admin-container">
+    <h1>Admin Dashboard</h1>
+
+    <!-- ✅ BANNER MANAGEMENT SECTION -->
+    <div class="admin-section">
+      <h2>Banner Management</h2>
+
+      <div class="form-card">
+        <h3>Add New Banner</h3>
+        <label for="bannerImage">Banner Image URL:</label>
+        <input type="text" id="bannerImage" placeholder="https://example.com/banner.jpg" required>
+        <label for="bannerCaption">Banner Caption:</label>
+        <input type="text" id="bannerCaption" placeholder="Optional Caption">
+        <button onclick="saveBanner()">Save Banner</button>
+      </div>
+
+      <h3>Current Banners</h3>
+      <table id="bannerTable">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Caption</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="bannerList"></tbody>
+      </table>
+    </div>
+
+    <!-- ✅ PRODUCT MANAGEMENT SECTION -->
+    <div class="admin-section">
+      <h2>Product Management</h2>
+      <table class="product-table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price (₹)</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="product-list"></tbody>
+      </table>
+
+      <div class="form-card">
+        <h3>Add / Edit Product</h3>
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" required>
+        <label for="productPrice">Price (₹):</label>
+        <input type="number" id="productPrice" required>
+        <label for="productImage">Image URL:</label>
+        <input type="text" id="productImage" placeholder="https://example.com/image.jpg" required>
+        <input type="hidden" id="editIndex">
+        <button onclick="saveProduct()">Save Product</button>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <h2>Order Management</h2>
+      <div class="coming-soon">
+        <p>Order management coming soon! (Placeholder for future development)</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Check admin access
+    const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+    if (!loggedInUser || !loggedInUser.isAdmin) {
+      alert('Access denied! Admins only.');
+      window.location.href = 'login.html';
+    }
+
+    // ============= BANNER MANAGEMENT =============
+    let banners = JSON.parse(localStorage.getItem('banners')) || [];
+    const bannerList = document.getElementById('bannerList');
+
+    function renderBanners() {
+      bannerList.innerHTML = '';
+      if (banners.length === 0) {
+        bannerList.innerHTML = '<tr><td colspan="3">No banners added yet.</td></tr>';
+        return;
+      }
+      banners.forEach((banner, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><img class="banner-thumb" src="${banner.image}" alt="Banner"></td>
+          <td>${banner.caption || ''}</td>
+          <td><button onclick="deleteBanner(${index})">Delete</button></td>
+        `;
+        bannerList.appendChild(row);
+      });
+    }
+
+    function saveBanner() {
+      const image = document.getElementById('bannerImage').value.trim();
+      const caption = document.getElementById('bannerCaption').value.trim();
+
+      if (!image) {
+        alert('Please enter a valid image URL.');
+        return;
+      }
+
+      banners.push({ image, caption });
+      localStorage.setItem('banners', JSON.stringify(banners));
+      document.getElementById('bannerImage').value = '';
+      document.getElementById('bannerCaption').value = '';
+      renderBanners();
+    }
+
+    function deleteBanner(index) {
+      if (confirm('Are you sure you want to delete this banner?')) {
+        banners.splice(index, 1);
+        localStorage.setItem('banners', JSON.stringify(banners));
+        renderBanners();
+      }
+    }
+
+    renderBanners();
+
+    // ============= PRODUCT MANAGEMENT =============
+    let products = JSON.parse(localStorage.getItem('products')) || [];
+    const productList = document.getElementById('product-list');
+
+    function renderProducts() {
+      productList.innerHTML = '';
+      products.forEach((product, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><img src="${product.image}" alt="${product.name}" style="width: 100px; height: auto;"></td>
+          <td>${product.name}</td>
+          <td>₹${product.price}</td>
+          <td>
+            <button onclick="editProduct(${index})">Edit</button>
+            <button onclick="deleteProduct(${index})">Delete</button>
+          </td>
+        `;
+        productList.appendChild(row);
+      });
+    }
+
+    function saveProduct() {
+      const name = document.getElementById('productName').value.trim();
+      const price = parseInt(document.getElementById('productPrice').value, 10);
+      const image = document.getElementById('productImage').value.trim();
+      const editIndex = document.getElementById('editIndex').value;
+
+      if (!name || isNaN(price) || !image) {
+        alert('Please enter valid product name, price, and image URL.');
+        return;
+      }
+
+      const newProduct = { name, price, image };
+
+      if (editIndex === '') {
+        products.push(newProduct);
+      } else {
+        products[parseInt(editIndex)] = newProduct;
+        document.getElementById('editIndex').value = '';
+      }
+
+      localStorage.setItem('products', JSON.stringify(products));
+      renderProducts();
+      clearForm();
+    }
+
+    function editProduct(index) {
+      const product = products[index];
+      document.getElementById('productName').value = product.name;
+      document.getElementById('productPrice').value = product.price;
+      document.getElementById('productImage').value = product.image;
+      document.getElementById('editIndex').value = index;
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    function deleteProduct(index) {
+      if (confirm('Are you sure you want to delete this product?')) {
+        products.splice(index, 1);
+        localStorage.setItem('products', JSON.stringify(products));
+        renderProducts();
+      }
+    }
+
+    function clearForm() {
+      document.getElementById('productName').value = '';
+      document.getElementById('productPrice').value = '';
+      document.getElementById('productImage').value = '';
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>

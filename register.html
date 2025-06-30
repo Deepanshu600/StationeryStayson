@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stationary Stayson - Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #000;
+      --secondary-color: #222;
+      --accent-color: #e0e0e0;
+      --background-color: #fff;
+      --text-color: #111;
+      --error-color: #c62828;
+      --border-radius: 16px;
+      --transition: 0.4s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--background-color);
+      color: var(--text-color);
+    }
+
+    .register-container {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .banner-side {
+      flex: 7;
+      position: relative;
+      background: url('YOUR_BANNER_IMAGE_URL') center center / cover no-repeat;
+      border-top-right-radius: var(--border-radius);
+      border-bottom-right-radius: var(--border-radius);
+    }
+
+    .banner-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .banner-overlay h1 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+    }
+
+    .banner-overlay p {
+      font-size: 1.1rem;
+      max-width: 600px;
+      line-height: 1.5;
+      color: #eaeaea;
+    }
+
+    .form-side {
+      flex: 3;
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-shadow: -4px 0 12px rgba(0,0,0,0.05);
+      overflow-y: auto;
+    }
+
+    .register-form {
+      width: 100%;
+      max-width: 400px;
+      max-height: 90vh;
+      background-color: #fff;
+      border-radius: var(--border-radius);
+      padding: 30px 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow-y: auto;
+      animation: fadeSlide 0.6s ease forwards;
+    }
+
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .brand-header {
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .brand-header h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      letter-spacing: 0.5px;
+    }
+
+    .register-form h2 {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .register-form p.brand-subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 12px;
+    }
+
+    .register-form label {
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+.register-form input,
+.register-form select {
+  padding: 14px 18px;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  font-size: 1rem;
+  background-color: #fff;
+  color: #111;
+  transition: border var(--transition), box-shadow var(--transition), background-color var(--transition);
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Bigger calendar icon and better date input look */
+.register-form input[type="date"] {
+  padding: 14px 18px;
+  border-radius: 16px;
+  font-size: 1rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.register-form select {
+  background-image: url("data:image/svg+xml,%3Csvg fill='none' stroke='%23333' stroke-width='2' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  background-size: 20px 20px;
+  cursor: pointer;
+}
+
+.register-form input:focus,
+.register-form select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.12);
+  outline: none;
+}
+
+    .error-message {
+      color: var(--error-color);
+      text-align: center;
+      font-size: 0.85rem;
+      display: none;
+    }
+
+    .register-button {
+      display: block;
+      margin: 18px auto 0 auto;
+      width: 85%;
+      background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+      color: #fff;
+      border: none;
+      padding: 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      text-align: center;
+      transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
+    }
+
+    .register-button:hover {
+      background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 900px) {
+      .register-container {
+        flex-direction: column;
+      }
+      .banner-side {
+        flex: none;
+        height: 300px;
+        border-radius: 0;
+      }
+      .form-side {
+        flex: none;
+        padding: 20px 10px;
+      }
+      .register-form {
+        max-width: 95%;
+        padding: 24px 16px;
+        max-height: 85vh;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container">
+    <div class="banner-side">
+      <div class="banner-overlay">
+        <div>
+          <h1>Stationary Stayson</h1>
+          <p>Join our creative community. Premium stationery that inspires productivity every day.</p>
+        </div>
+      </div>
+    </div>
+    <div class="form-side">
+      <form class="register-form" onsubmit="return handleRegister(event)">
+        <div class="brand-header">
+          <h1>Stationary Stayson</h1>
+        </div>
+        <h2>Create Account</h2>
+        <p class="brand-subtitle">Register with your details</p>
+
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" placeholder="Your full name" required>
+
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" required>
+
+        <label for="gender">Gender</label>
+        <select id="gender" required>
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@example.com" required>
+
+        <label for="contact">Contact Number</label>
+        <input type="tel" id="contact" placeholder="Your contact number" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Create a password" required>
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+
+        <div id="errorMessage" class="error-message"></div>
+
+        <button type="submit" class="register-button">Register</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function handleRegister(event) {
+      event.preventDefault();
+      const fullName = document.getElementById('fullName').value.trim();
+      const dob = document.getElementById('dob').value;
+      const gender = document.getElementById('gender').value;
+      const email = document.getElementById('email').value.trim();
+      const contact = document.getElementById('contact').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const confirmPassword = document.getElementById('confirmPassword').value.trim();
+      const errorDiv = document.getElementById('errorMessage');
+
+      if (password !== confirmPassword) {
+        errorDiv.textContent = 'Passwords do not match.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+      if (users.find(u => u.email === email || u.contact === contact)) {
+        errorDiv.textContent = 'User with this email or contact already exists.';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      users.push({
+        fullName,
+        dob,
+        gender,
+        email,
+        contact,
+        password
+      });
+      localStorage.setItem('users', JSON.stringify(users));
+      alert('Registration successful! Please login.');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>

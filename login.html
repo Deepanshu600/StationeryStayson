@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stationary Stayson - Login</title>
+  <link href="style.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="login-container">
+    <div class="banner-side">
+      <div class="banner-overlay">
+        <div class="banner-content">
+          <h1>Stationary Stayson</h1>
+          <p>Premium Quality Stationery for Professionals and Students. Discover our curated collection of essentials, designed to inspire creativity and productivity every day.</p>
+        </div>
+      </div>
+    </div>
+    <div class="login-side">
+      <form class="login-form" id="loginForm">
+        <h2>Welcome Back</h2>
+        <p class="brand-subtitle">Login to your account</p>
+
+        <label for="loginIdentifier">Email or Contact Number</label>
+        <input type="text" id="loginIdentifier" placeholder="Enter email or number" required>
+
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+
+        <div id="loginError" class="error-message"></div>
+
+        <button type="submit" class="login-button">Login</button>
+        <div class="switch-link">
+          Don't have an account? <a href="register.html">Register here</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const loginForm = document.getElementById('loginForm');
+    const loginError = document.getElementById('loginError');
+
+    loginForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const identifier = document.getElementById('loginIdentifier').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const user = users.find(u =>
+        (u.email === identifier || u.contact === identifier) && u.password === password
+      );
+
+      if (user) {
+        loginError.textContent = '';
+        localStorage.setItem('loggedInUser', JSON.stringify(user));
+        window.location.href = 'index.html';
+      } else {
+        loginError.textContent = 'Invalid email/contact or password. Please try again.';
+      }
+    });
+  </script>
+</body>
+</html>

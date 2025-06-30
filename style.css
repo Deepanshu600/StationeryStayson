@@ -1,0 +1,204 @@
+:root {
+  --primary-color: #000;
+  --secondary-color: #222;
+  --accent-color: #e0e0e0;
+  --background-color: #fff;
+  --text-color: #111;
+  --error-color: #c62828;
+  --border-radius: 16px;
+  --transition: 0.4s ease;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.login-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.banner-side {
+  flex: 7;
+  position: relative;
+  background: url('images/banner-login.jpg') center center / cover no-repeat;
+  border-top-right-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  overflow: hidden;
+  animation: fadeIn 1.5s ease;
+}
+
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+  color: #fff;
+}
+
+.banner-content h1 {
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+  animation: slideInDown 1s ease;
+}
+
+.banner-content p {
+  font-size: 1.15rem;
+  max-width: 600px;
+  line-height: 1.5;
+  animation: fadeIn 2s ease;
+}
+
+.login-side {
+  flex: 3;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  box-shadow: -4px 0 12px rgba(0,0,0,0.05);
+  animation: slideInRight 1.2s ease;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 400px;
+  background-color: #fff;
+  border-radius: var(--border-radius);
+  padding: 40px 30px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: var(--transition);
+}
+
+.login-form h2 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.login-form p.brand-subtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.login-form label {
+  font-weight: 500;
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+}
+
+.login-form input {
+  padding: 14px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border var(--transition), box-shadow var(--transition);
+}
+
+.login-form input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+  outline: none;
+}
+
+.error-message {
+  color: var(--error-color);
+  text-align: center;
+  font-size: 0.95rem;
+  display: block;
+  min-height: 20px;
+}
+
+.login-button {
+  display: block;
+  margin: 30px auto 0 auto;
+  width: 85%;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  color: #fff;
+  border: none;
+  padding: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.05rem;
+  font-weight: 500;
+  text-align: center;
+  transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.login-button:hover {
+  background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
+  transform: translateY(-1px);
+}
+
+.switch-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.95rem;
+}
+
+.switch-link a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.switch-link a:hover {
+  text-decoration: underline;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInDown {
+  from { transform: translateY(-40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .login-container {
+    flex-direction: column;
+  }
+  .banner-side {
+    flex: none;
+    height: 300px;
+    border-radius: 0;
+  }
+  .login-side {
+    flex: none;
+    padding: 20px;
+  }
+}
